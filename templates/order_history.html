@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>南开大学二手闲置 - 我的订单</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <script src="/static/js/script.js"></script>
+</head>
+<body>
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="{{ url_for('index') }}" class="brand">
+                <h1 class="brand-name">南开大学二手闲置</h1>
+            </a>
+            
+            <button class="menu-toggle" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="{{ url_for('index') }}" class="nav-link">
+                        <i class="fas fa-home"></i>
+                        <span>返回主页</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url_for('logout') }}" class="nav-link">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>退出</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </header>
+    <main class="main-container">
+        <div class="card">
+            <div class="page-header">
+                <h2>我的订单</h2>
+            </div>
+            
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            
+            <div class="table-container">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>订单ID</th>
+                            <th>商品名称</th>
+                            <th>总金额</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in orders %}
+                        <tr>
+                            <td><a href="{{ url_for('order_detail', order_id=order.OrderID) }}" class="text-link">{{ order.OrderID }}</a></td>
+                            <td>{{ order.product.名称 }}</td>
+                            <td>¥{{ order.总金额 }}</td>
+                            <td>
+                                <span class="status-badge status-{{ order.交易状态 }}">
+                                    {{ order.交易状态 }}
+                                </span>
+                                {% if order.交易状态 == '待付款' %}
+                                <div class="countdown" data-created="{{ order.创建时间.isoformat() }}">
+                                    <span class="countdown-text">剩余支付时间: </span>
+                                    <span class="time-remaining">10:00</span>
+                                </div>
+                                {% endif %}
+                            </td>
+                            <td class="actions">
+                                <div class="btn-group">
+                                    {% if order.交易状态 == '待付款' %}
+                                    <a href="{{ url_for('pay', order_id=order.OrderID) }}" class="btn btn-sm btn-warning">
+                                        <i class="fas fa-money-bill-wave"></i> 去付款
+                                    </a>
+                                    {% elif order.交易状态 == '已付款' and not order.reviews %}
+                                    <a href="{{ url_for('review', order_id=order.OrderID) }}" class="btn btn-sm btn-primary">
+                                        <i class="fas fa-star"></i> 去评价
+                                    </a>
+                                    {% elif order.交易状态 == '已取消' %}
+                                    <span class="text-muted">订单已取消</span>
+                                    {% elif order.reviews %}
+                                    <a href="{{ url_for('order_detail', order_id=order.OrderID) }}" class="btn btn-sm btn-success">
+                                        <i class="fas fa-eye"></i> 查看详情
+                                    </a>
+                                    {% endif %}
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

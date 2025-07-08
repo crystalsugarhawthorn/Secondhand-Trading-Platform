@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>南开大学二手闲置 - 商品详情</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <script src="/static/js/script.js"></script>
+</head>
+<body>
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="{{ url_for('index') }}" class="brand">
+                <h1 class="brand-name">南开大学二手闲置</h1>
+            </a>
+            
+            <button class="menu-toggle" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="{{ url_for('index') }}" class="nav-link">
+                        <i class="fas fa-home"></i>
+                        <span>返回主页</span>
+                    </a>
+                </li>
+                {% if current_user.is_authenticated %}
+                    <li class="nav-item">
+                        <a href="{{ url_for('logout') }}" class="nav-link">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>退出</span>
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </header>
+    <main class="main-container">
+        <div class="card">
+            <div class="page-header">
+                <h2>商品详情</h2>
+            </div>
+            
+            <div class="product-info">
+                <h3>{{ product.名称 }}</h3>
+                <div class="detail-row">
+                    <span class="detail-label">价格：</span>
+                    <span class="detail-value">¥{{ product.价格 }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">分类：</span>
+                    <span class="detail-value">{{ product.Category.分类名称 if product.Category else '无' }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">上架时间：</span>
+                    <span class="detail-value">{{ product.上架时间.strftime('%Y-%m-%d') }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">描述：</span>
+                    <p class="detail-value">{{ product.描述 or '暂无描述' }}</p>
+                </div>
+            </div>
+
+            <div class="seller-info">
+                <h3>卖家信息</h3>
+                <div class="detail-row">
+                    <span class="detail-label">卖家ID：</span>
+                    <span class="detail-value">{{ product.卖家_UserID }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">实名状态：</span>
+                    <span class="detail-value">
+                        <span class="status-badge status-{{ seller.实名状态 }}">
+                            {{ seller.实名状态 }}
+                        </span>
+                    </span>
+                </div>
+            </div>
+
+            {% if current_user.is_authenticated and not product.买家_UserID and is_buyer and not is_seller and current_user.UserID != product.卖家_UserID %}
+                <div class="form-actions">
+                    <form method="POST" action="{{ url_for('buy', product_id=product.ProductID) }}">
+                        <button type="submit" class="btn btn-primary buy">
+                            <i class="fas fa-shopping-cart"></i> 立即购买
+                        </button>
+                    </form>
+                </div>
+            {% endif %}
+        </div>
+    </main>
+    
+    <script>
+        function toggleMenu() {
+            const menu = document.querySelector('.nav-menu');
+            menu.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>
+
+<!-- 商品详情页 -->

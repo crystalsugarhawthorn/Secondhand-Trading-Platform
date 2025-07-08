@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>南开大学二手闲置 - 订单支付</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <script src="/static/js/script.js"></script>
+</head>
+<body>
+    <!-- 支付页面 -->
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="{{ url_for('index') }}" class="brand">
+                <h1 class="brand-name">南开大学二手闲置</h1>
+            </a>
+            
+            <button class="menu-toggle" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="{{ url_for('index') }}" class="nav-link">
+                        <i class="fas fa-home"></i>
+                        <span>返回主页</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url_for('logout') }}" class="nav-link">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>退出</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </header>
+    <main class="main-container">
+        <div class="card">
+            {% if error %}
+                <div class="alert alert-danger">{{ error }}</div>
+            {% else %}
+                <div class="page-header">
+                    <h2>订单支付</h2>
+                </div>
+                
+                <div class="order-details">
+                    <h3>订单信息</h3>
+                    <div class="detail-row">
+                        <span class="detail-label">订单ID：</span>
+                        <span class="detail-value">{{ order.OrderID }}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">商品名称：</span>
+                        <span class="detail-value">{{ product.名称 }}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">商品价格：</span>
+                        <span class="detail-value">¥{{ product.价格 }}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">总金额：</span>
+                        <span class="detail-value">¥{{ order.总金额 }}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">订单状态：</span>
+                        <span class="detail-value status-badge status-{{ order.交易状态 }}">
+                            {{ order.交易状态 }}
+                        </span>
+                    </div>
+                    {% if order.交易状态 == '待付款' %}
+                    <div class="countdown" data-created="{{ order.创建时间.isoformat() }}">
+                        <span class="detail-label">剩余支付时间: </span>
+                        <span class="time-remaining">10:00</span>
+                    </div>
+                    {% endif %}
+                </div>
+
+                {% if order.交易状态 == '待付款' %}
+                    <form method="POST" class="pay-form">
+                        {{ form.hidden_tag() }}
+                        <div class="form-group">
+                            <label for="payment_method">支付方式</label>
+                            {{ form.payment_method(class="form-control") }}
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-check-circle"></i> 确认支付
+                            </button>
+                            <a href="{{ url_for('cancel_order', order_id=order.OrderID) }}" class="btn btn-danger">
+                                <i class="fas fa-ban"></i> 取消订单
+                            </a>
+                            <a href="{{ url_for('index') }}" class="btn btn-outline">
+                                <i class="fas fa-times"></i> 返回
+                            </a>
+                        </div>
+                    </form>
+                {% else %}
+                    <div class="alert alert-success">
+                        <i class="fas fa-check-circle"></i> 订单已支付！
+                    </div>
+                    <div class="form-actions">
+                        <a href="{{ url_for('index') }}" class="btn btn-primary">
+                            <i class="fas fa-home"></i> 返回主页
+                        </a>
+                    </div>
+                {% endif %}
+            {% endif %}
+        </div>
+    </main>
+</body>
+</html>

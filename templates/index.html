@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>南开大学二手闲置</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <script src="/static/js/script.js"></script>
+    <script>
+        function toggleMenu() {
+            const navMenu = document.querySelector('.nav-menu');
+            navMenu.classList.toggle('active');
+        }
+    </script>
+</head>
+<body>
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="{{ url_for('index') }}" class="brand">
+                <h1 class="brand-name">南开大学二手闲置</h1>
+            </a>
+            
+            <button class="menu-toggle" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <ul class="nav-menu">
+                {% if current_user.is_authenticated %}
+                    {% if is_seller %}
+                        <li class="nav-item">
+                            <a href="{{ url_for('sell') }}" class="nav-link">
+                                <i class="fas fa-plus-circle"></i>
+                                <span>发布商品</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ url_for('seller_orders') }}" class="nav-link">
+                                <i class="fas fa-list-alt"></i>
+                                <span>我的订单</span>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if is_buyer %}
+                        <li class="nav-item">
+                            <a href="{{ url_for('order_history') }}" class="nav-link">
+                                <i class="fas fa-history"></i>
+                                <span>我的订单</span>
+                            </a>
+                        </li>
+                    {% endif %}
+                    <li class="nav-item">
+                        <a href="{{ url_for('logout') }}" class="nav-link">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>退出</span>
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a href="{{ url_for('login') }}" class="nav-link">
+                            <i class="fas fa-sign-in-alt"></i>
+                            <span>登录</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ url_for('register') }}" class="nav-link">
+                            <i class="fas fa-user-plus"></i>
+                            <span>注册</span>
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </header>
+    <main>
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% else %}
+            <div class="search-bar">
+                <form method="GET" id="search-form">
+                    <input type="text" name="search" placeholder="搜索商品名称" value="{{ search_query | default('') }}">
+                    <select name="category">
+                        <option value="">所有分类</option>
+                        {% for category in categories %}
+                            <option value="{{ category.CategoryID }}" {% if current_category and category.CategoryID == current_category %}selected{% endif %}>
+                                {{ category.分类名称 }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit" class="btn">搜索</button>
+                </form>
+                <button onclick="toggleView('list')" class="btn">列表视图</button>
+                <button onclick="toggleView('grid')" class="btn">块状视图</button>
+            </div>
+            <div id="product-container" class="product-grid">
+                {% for product in products %}
+                    <div class="product-item">
+                        <div class="product-name">
+                            <a href="{{ url_for('product_detail', product_id=product.product.ProductID) }}">
+                                {{ product.product.名称 }}
+                            </a>
+                        </div>
+                        <div class="product-price">价格: ¥{{ product.product.价格 }}</div>
+                        <div class="product-category">分类: {{ product.product.Category.分类名称 if product.product.Category else '无' }}</div>
+                        <div class="product-seller">
+                            卖家ID: {{ product.product.卖家_UserID }}
+                            <span class="status-badge status-{{ product.seller.实名状态 }}">
+                                ({{ product.seller.实名状态 }})
+                            </span>
+                        </div>
+                        <div class="product-time">上架时间: {{ product.product.上架时间.strftime('%Y-%m-%d') }}</div>
+                        {% if is_buyer and not product.买家_UserID %}
+                            <div>
+                                <form method="POST" action="{{ url_for('buy', product_id=product.product.ProductID) }}">
+                                    <button type="submit" class="btn buy">购买</button>
+                                </form>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </main>
+</body>
+</html>
+<!-- 首页/商品浏览，含搜索、分类、购买等 -->

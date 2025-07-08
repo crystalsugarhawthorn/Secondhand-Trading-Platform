@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>南开大学二手闲置 - 我的订单</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="{{ url_for('index') }}" class="brand">
+                <h1 class="brand-name">南开大学二手闲置</h1>
+            </a>
+            
+            <button class="menu-toggle" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="{{ url_for('index') }}" class="nav-link">
+                        <i class="fas fa-home"></i>
+                        <span>返回主页</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url_for('logout') }}" class="nav-link">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>退出</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </header>
+    <main>
+        <h2>我的商品订单</h2>
+        <div class="filter-bar">
+            <form method="GET">
+                <select name="status" onchange="this.form.submit()">
+                    <option value="">所有状态</option>
+                    <option value="待付款" {% if request.args.get('status') == '待付款' %}selected{% endif %}>待付款</option>
+                    <option value="已付款" {% if request.args.get('status') == '已付款' %}selected{% endif %}>已付款</option>
+                    <option value="已完成" {% if request.args.get('status') == '已完成' %}selected{% endif %}>已完成</option>
+                </select>
+            </form>
+        </div>
+        <table class="order-table">
+            <thead>
+                <tr>
+                    <th>订单ID</th>
+                    <th>商品名称</th>
+                    <th>价格</th>
+                    <th>买家</th>
+                    <th>状态</th>
+                    <th>评价</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                <tr>
+                    <td>{{ order.OrderID }}</td>
+                    <td>{{ order.product.名称 }}</td>
+                    <td>¥{{ order.总金额 }}</td>
+                    <td>
+                        {{ order.buyer.姓名 }}
+                        <small class="text-muted">({{ order.buyer.学号 }})</small>
+                    </td>
+                    <td>
+                        <span class="status-badge status-{{ order.交易状态 }}">
+                            {{ order.交易状态 }}
+                        </span>
+                    </td>
+                    <td>
+                        {% if order.reviews %}
+                            <span class="rating-stars">
+                                {% for i in range(1, 6) %}
+                                    <i class="fas fa-star{% if i > order.reviews[0].评分 %} far{% endif %}"></i>
+                                {% endfor %}
+                            </span>
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{{ url_for('seller_order_detail', order_id=order.OrderID) }}" class="btn btn-sm">查看详情</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </main>
+    
+    <script>
+        function toggleMenu() {
+            const menu = document.querySelector('.nav-menu');
+            menu.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>

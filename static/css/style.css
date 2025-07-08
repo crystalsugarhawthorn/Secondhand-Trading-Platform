@@ -1,0 +1,889 @@
+/* 南开大学主题色、基础样式、响应式、卡片、按钮、表格、表单等 */
+
+:root {
+    /* 南开大学主题色 */
+    --nankai-purple: #6a1b9a;
+    --nankai-light: #9c27b0;
+    --nankai-lighter: #e1bee7;
+    
+    /* 基础色 */
+    --white: #ffffff;
+    --gray-100: #f8f9fa;
+    --gray-200: #e9ecef;
+    --gray-500: #adb5bd;
+    --gray-800: #343a40;
+    --black: #212529;
+    
+    /* 功能色 */
+    --success: #28a745;
+    --info: #17a2b8;
+    --warning: #ffc107;
+    --danger: #dc3545;
+    
+    /* 间距 */
+    --space-xs: 0.25rem;
+    --space-sm: 0.5rem;
+    --space-md: 1rem;
+    --space-lg: 1.5rem;
+    --space-xl: 3rem;
+    
+    /* 圆角 */
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 16px;
+    --radius-full: 9999px;
+    
+    /* 阴影 */
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
+    --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+    --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+    --shadow-xl: 0 20px 25px rgba(0,0,0,0.1);
+    
+    /* 过渡 */
+    --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 基础重置 */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    line-height: 1.6;
+    color: var(--gray-800);
+    background-color: var(--gray-100);
+    -webkit-font-smoothing: antialiased;
+    padding-top: 64px; /* 为固定导航栏留出空间 */
+}
+
+/* 导航栏样式 */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(135deg, #6a1b9a 0%, #9c27b0 100%);
+    color: white;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    z-index: 1000;
+    padding: 0 2rem;
+}
+
+.nav-container {
+    max-width: 1440px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 4rem;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+}
+
+.brand-logo {
+    height: 2rem;
+    width: auto;
+}
+
+.brand-name {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: white;
+    margin: 0;
+}
+
+.nav-menu {
+    display: flex;
+    gap: 0.5rem;
+    list-style: none;
+}
+
+.nav-item {
+    position: relative;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.5rem 1rem;
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    border-radius: 2rem;
+    transition: all 0.2s ease;
+}
+
+.nav-link:hover {
+    background-color: rgba(255,255,255,0.15);
+    transform: translateY(-2px);
+}
+
+.nav-link i {
+    font-size: 1.1rem;
+}
+
+/* 移动端菜单 */
+.menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .navbar {
+        padding: 0 1rem;
+    }
+    
+    .nav-menu {
+        position: fixed;
+        top: 4rem;
+        left: 0;
+        right: 0;
+        background: #6a1b9a;
+        flex-direction: column;
+        align-items: center;
+        padding: 1rem 0;
+        transform: translateY(-100%);
+        opacity: 0;
+        transition: all 0.3s ease;
+    }
+    
+    .nav-menu.active {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    
+    .menu-toggle {
+        display: block;
+    }
+    
+    .nav-link {
+        width: 100%;
+        justify-content: center;
+    }
+
+    /* 移动端按钮优化 */
+    .btn {
+        width: 100%;
+        margin-bottom: 1rem;
+        padding: 1rem;
+        font-size: 1rem;
+        border-radius: 8px;
+    }
+    
+    .btn-sm {
+        padding: 0.75rem;
+        font-size: 0.9rem;
+    }
+    
+    .btn-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}
+/* 主要内容区域 */
+.main-container {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 0 120px;  /* 进一步增加左右边距 */
+}
+
+main {
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: var(--card-shadow);
+    margin-bottom: 30px;
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--primary-lighter);
+}
+
+.page-header h2 {
+    margin: 0;
+    color: var(--primary-color);
+    font-size: 1.8rem;
+}
+
+/* 卡片布局增强 */
+.card {
+    background: white;
+    border-radius: 12px;  /* 增加圆角 */
+    box-shadow: var(--card-shadow);
+    padding: 30px;  /* 增加内边距 */
+    margin: 0 20px 30px 20px;  /* 增加外边距 */
+    transition: var(--transition);
+}
+
+/* 移除卡片容器的悬浮效果，保留按钮效果 */
+
+.card-header {
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+}
+.form-group {
+    margin-bottom: 15px;
+}
+.form-control {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.form-control.textarea {
+    height: 100px;
+}
+/* 按钮样式增强 */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--nankai-purple);
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: var(--transition);
+    font-weight: 500;
+    font-size: 1rem;
+    box-shadow: var(--shadow-sm);
+    text-align: center;
+    white-space: nowrap;
+    min-width: 120px;
+    height: 44px;
+    gap: 8px;
+}
+
+.btn:hover {
+    background-color: var(--nankai-light);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+.btn i {
+    font-size: 1.1rem;
+}
+
+.btn:hover {
+    background-color: var(--nankai-light);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+.btn i {
+    font-size: 1.2rem;
+}
+
+/* 按钮变体 */
+.btn-sm {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    height: 36px;
+    min-width: 100px;
+}
+
+.btn-outline {
+    background-color: transparent;
+    border: 2px solid var(--nankai-purple);
+    color: var(--nankai-purple);
+}
+
+.btn-outline:hover {
+    background-color: var(--nankai-lighter);
+    border-color: var(--nankai-light);
+    color: var(--nankai-purple); /* Ensure text remains visible */
+}
+
+.btn.buy {
+    background-color: var(--success);
+    color: white;
+}
+
+.btn.buy:hover {
+    background-color: #388e3c;
+    color: white;
+}
+
+.btn.danger {
+    background-color: var(--danger);
+    color: white;
+}
+
+.btn.danger:hover {
+    background-color: #d32f2f;
+    color: white;
+}
+
+/* 禁用状态 */
+.btn:disabled {
+    background-color: var(--gray-500);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+    opacity: 0.7;
+}
+
+/* 禁用状态 */
+.btn:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+.error {
+    color: red;
+}
+.success {
+    color: green;
+}
+.search-bar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+.search-bar input, .search-bar select {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    flex: 1;
+}
+.search-bar .btn {
+    flex: 0 0 auto;
+}
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+}
+.product-grid .product-item {
+    background: #fff;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    text-align: center;
+}
+.product-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.product-list .product-item {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr 100px;
+    align-items: center;
+    background: #fff;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+.product-list .product-item div {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+.admin-table th, .admin-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+.admin-table th {
+    background-color: #f2f2f2;
+}
+.order-details {
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    background-color: #fafafa;
+}
+.order-details p {
+    margin: 8px 0;
+}
+.order-details strong {
+    display: inline-block;
+    width: 120px;
+}
+.pay-form {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+/* 增强表格样式 */
+.table-container {
+    overflow-x: auto;
+    margin: 15px 0 30px 0;  /* 增加上下边距 */
+    padding: 0 15px;  /* 增加内边距 */
+    border-radius: 8px;  /* 添加圆角 */
+    background-color: white;  /* 添加背景色 */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);  /* 添加轻微阴影 */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    box-shadow: var(--card-shadow);
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+th, td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid var(--primary-lighter);
+}
+
+th {
+    background-color: var(--primary-color);
+    color: white;
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+}
+
+tr:nth-child(even) {
+    background-color: #fafafa;
+}
+
+tr:hover {
+    background-color: var(--primary-lighter);
+    transition: var(--transition);
+}
+
+/* 表单样式增强 */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    transition: var(--transition);
+    font-size: 1rem;
+}
+
+.form-control:focus {
+    border-color: var(--primary-light);
+    box-shadow: 0 0 0 3px rgba(106,27,154,0.1);
+    outline: none;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--primary-color);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .main-container {
+        padding: 0 40px;  /* 调整平板端边距 */
+    }
+    
+    .header-container {
+        flex-direction: column;
+        gap: 15px;
+        padding: 0 40px;  /* 调整平板端边距 */
+    }
+    
+    nav {
+        flex-wrap: wrap;
+        justify-content: center;
+        width: 100%;
+    }
+    
+    nav a {
+        flex: 1 0 45%;
+        text-align: center;
+        margin: 5px;
+    }
+    
+    .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;  /* 增加间距 */
+    }
+    
+    table {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .btn {
+        width: 100%;
+        margin-bottom: 15px;  /* 增加按钮间距 */
+    }
+
+    .card {
+        padding: 20px;  /* 调整卡片内边距 */
+        margin: 0 0 20px 0;  /* 调整卡片外边距 */
+    }
+
+    .product-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 15px;
+    }
+
+    .product-list .product-item {
+        grid-template-columns: 1fr;
+        gap: 10px;  /* 增加间距 */
+    }
+}
+
+@media (max-width: 576px) {
+    .main-container {
+        padding: 0 20px;  /* 手机端边距 */
+    }
+    
+    .header-container {
+        padding: 0 20px;  /* 手机端边距 */
+    }
+    
+    header h1 {
+        font-size: 1.5rem;
+    }
+    
+    main {
+        padding: 15px;
+    }
+    
+    .card {
+        padding: 15px;
+        margin: 0 0 20px 0;  /* 调整手机端卡片外边距 */
+    }
+    
+    th, td {
+        padding: 8px;
+        font-size: 0.85rem;
+        white-space: nowrap;
+    }
+    
+    .form-control {
+        padding: 10px;
+    }
+    
+    .btn {
+        padding: 10px 15px;
+        font-size: 0.9rem;
+    }
+    
+    .page-header h2 {
+        font-size: 1.5rem;
+    }
+
+    .product-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* 文件上传样式 */
+.file-upload-wrapper {
+    margin-bottom: 1.5rem;
+}
+
+.file-upload-container {
+    position: relative;
+    overflow: hidden;
+    display: block;
+    width: 100%;
+    border: 2px dashed var(--nankai-light);
+    border-radius: var(--radius-md);
+    padding: 2rem;
+    text-align: center;
+    transition: var(--transition);
+    background-color: rgba(156, 39, 176, 0.05);
+}
+
+.file-upload-container:hover {
+    border-color: var(--nankai-purple);
+    background-color: rgba(106, 27, 154, 0.1);
+}
+
+.nankai-file-input {
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.file-upload-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: var(--nankai-purple);
+}
+
+.file-upload-info i {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    color: var(--nankai-purple);
+}
+
+.file-upload-info span {
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.file-upload-text {
+    font-size: 0.85rem;
+    color: var(--gray-500);
+    margin-top: 0.5rem;
+    text-align: center;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    .file-upload-container {
+        padding: 1.5rem;
+    }
+    
+    .file-upload-info i {
+        font-size: 1.8rem;
+    }
+    
+    .file-upload-info span {
+        font-size: 0.9rem;
+    }
+
+    /* 导航栏响应式 */
+    .navbar {
+        padding: 0.5rem 1rem;
+    }
+
+    .brand-name {
+        font-size: 1.2rem;
+    }
+
+    .nav-menu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background-color: var(--nankai-light);
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        display: none;
+        z-index: 1000;
+    }
+
+    .nav-menu.active {
+        display: block;
+    }
+
+    .nav-item {
+        display: block;
+        margin: 0;
+        border-bottom: 1px solid rgba(156, 39, 176, 0.1);
+    }
+
+    .nav-link {
+        padding: 0.8rem 1rem;
+        display: block;
+    }
+
+    .menu-toggle {
+        display: block;
+    }
+}
+
+/* 订单状态标签 */
+.status-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 1rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
+.status-待付款 {
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+}
+
+.status-已付款 {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.status-已完成 {
+    background-color: #d1ecf1;
+    color: #0c5460;
+    border: 1px solid #bee5eb;
+}
+
+.status-已取消 {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* 星级评分 */
+.rating-stars {
+    color: #ffc107;
+    font-size: 0.9rem;
+    letter-spacing: 0.1em;
+}
+
+.rating-stars .far {
+    color: #e4e5e9;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    .status-badge {
+        padding: 0.2rem 0.5rem;
+        font-size: 0.8rem;
+    }
+    
+    .rating-stars {
+        font-size: 0.8rem;
+    }
+}
+
+/* 卡片布局样式 */
+.card-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: var(--space-lg);
+    margin: var(--space-lg) 0;
+}
+
+.info-card {
+    background: var(--white);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    transition: var(--transition);
+}
+
+.info-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.card-header {
+    background: var(--gray-100);
+    padding: var(--space-md);
+    font-size: 1rem;
+    font-weight: 600;
+    border-bottom: 1px solid var(--gray-200);
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    color: var(--nankai-purple);
+}
+
+.card-body {
+    padding: var(--space-md);
+}
+
+.detail-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: var(--space-md);
+}
+
+.detail-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+}
+
+.detail-label {
+    font-size: 0.875rem;
+    color: var(--gray-500);
+    font-weight: 500;
+}
+
+.detail-value {
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--gray-800);
+}
+
+.review-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+.review-text {
+    font-size: 0.9375rem;
+    line-height: 1.5;
+}
+
+.review-meta {
+    font-size: 0.8125rem;
+    color: var(--gray-500);
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    .card-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .detail-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .card-header {
+        padding: var(--space-sm) var(--space-md);
+    }
+    
+    .card-body {
+        padding: var(--space-sm);
+    }
+}

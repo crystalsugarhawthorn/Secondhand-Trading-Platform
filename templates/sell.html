@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>南开大学二手闲置 - 发布商品</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <!-- 卖家发布商品页面 -->
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="{{ url_for('index') }}" class="brand">
+                <h1 class="brand-name">南开大学二手闲置</h1>
+            </a>
+            
+            <button class="menu-toggle" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="{{ url_for('index') }}" class="nav-link">
+                        <i class="fas fa-home"></i>
+                        <span>返回主页</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url_for('logout') }}" class="nav-link">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>退出</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </header>
+    <main class="main-container">
+        <div class="page-header">
+            <h2>发布商品</h2>
+        </div>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        <div class="card sell-card">
+            <form method="POST" class="product-form">
+                {{ form.hidden_tag() }}
+                <div class="form-group">
+                    <label class="form-label">{{ form.名称.label }}</label>
+                    {{ form.名称(class="form-control nankai-input", placeholder="输入商品名称") }}
+                    {% for error in form.名称.errors %}
+                        <div class="invalid-feedback">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">{{ form.描述.label }}</label>
+                    {{ form.描述(class="form-control nankai-textarea", placeholder="详细描述商品信息", rows=5) }}
+                    {% for error in form.描述.errors %}
+                        <div class="invalid-feedback">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label class="form-label">{{ form.价格.label }}</label>
+                        <div class="input-group">
+                            <span class="input-group-text nankai-input-group">¥</span>
+                            {{ form.价格(class="form-control nankai-input", placeholder="0.00") }}
+                        </div>
+                        {% for error in form.价格.errors %}
+                            <div class="invalid-feedback">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    
+                    <div class="form-group col-md-6">
+                        <label class="form-label">{{ form.分类.label }}</label>
+                        {{ form.分类(class="form-select nankai-select", id="category-select") }}
+                        {% for error in form.分类.errors %}
+                            <div class="invalid-feedback">{{ error }}</div>
+                        {% endfor %}
+                        <div id="custom-category-group" style="display:none; margin-top:10px;">
+                            <label class="form-label">自定义分类</label>
+                            <input type="text" class="form-control nankai-input" name="custom_category" 
+                                   placeholder="请输入自定义分类名称">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">商品图片</label>
+                    <div class="file-upload-wrapper">
+                        <div class="file-upload-container">
+                            <input type="file" class="nankai-file-input" name="image" accept="image/*">
+                            <div class="file-upload-info">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <span>点击上传图片</span>
+                            </div>
+                        </div>
+                        <small class="file-upload-text">支持JPG/PNG格式，最大2MB</small>
+                    </div>
+                </div>
+
+                <div class="form-actions mt-4">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-check"></i> 发布商品
+                    </button>
+                    <a href="{{ url_for('index') }}" class="btn btn-outline">
+                        <i class="fas fa-times"></i> 取消
+                    </a>
+                </div>
+            </form>
+        </div>
+    </main>
+    
+    <script>
+        // 显示/隐藏自定义分类输入框
+        document.getElementById('category-select').addEventListener('change', function() {
+            const customGroup = document.getElementById('custom-category-group');
+            if (this.value === '8') { // 假设"其他"是第8个选项
+                customGroup.style.display = 'block';
+            } else {
+                customGroup.style.display = 'none';
+            }
+        });
+
+        function toggleMenu() {
+            const menu = document.querySelector('.nav-menu');
+            menu.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>

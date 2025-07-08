@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>南开大学二手闲置 - 用户登录</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <script src="/static/js/script.js"></script>
+    <script>
+        function toggleMenu() {
+            const navMenu = document.querySelector('.nav-menu');
+            navMenu.classList.toggle('active');
+        }
+    </script>
+</head>
+<body>
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="{{ url_for('index') }}" class="brand">
+                <h1 class="brand-name">南开大学二手闲置</h1>
+            </a>
+            
+            <button class="menu-toggle" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="{{ url_for('register') }}" class="nav-link">
+                        <i class="fas fa-user-plus"></i>
+                        <span>注册</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </header>
+    <main>
+        <!-- 登录页面 -->
+        <h2>登录</h2>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <p class="{{ category }}">{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        <form method="POST" id="login-form">
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+                <label>{{ form.手机号.label }}</label>
+                {{ form.手机号(class="form-control", required=true) }}
+                {% for error in form.手机号.errors %}
+                    <div class="invalid-feedback">{{ error }}</div>
+                {% endfor %}
+            </div>
+            <div class="form-group">
+                <label>{{ form.密码.label }}</label>
+                {{ form.密码(class="form-control", required=true) }}
+                {% for error in form.密码.errors %}
+                    <div class="invalid-feedback">{{ error }}</div>
+                {% endfor %}
+            </div>
+            <div class="form-group">
+                <label>{{ form.角色.label }}</label>
+                {{ form.角色(class="form-control", required=true) }}
+                {% for error in form.角色.errors %}
+                    <div class="invalid-feedback">{{ error }}</div>
+                {% endfor %}
+            </div>
+            <div class="form-group">
+                {{ form.submit(class="btn btn-primary") }}
+            </div>
+        </form>
+
+        <script>
+            document.getElementById('login-form').addEventListener('submit', function(e) {
+                // 前端基本验证
+                const phone = document.querySelector('[name="手机号"]').value;
+                const password = document.querySelector('[name="密码"]').value;
+                const role = document.querySelector('[name="角色"]').value;
+                
+                if (!phone || !password || !role) {
+                    alert('请填写所有必填字段');
+                    e.preventDefault();
+                }
+            });
+        </script>
+    </main>
+</body>
+</html>
